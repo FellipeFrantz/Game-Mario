@@ -11,6 +11,7 @@ var verifica = false
 // Função para reiniciar o pipe
 const resetPipe = () => {
     pipe.style.animation = ' pipe-animation 1.5s infinite linear'
+    pipe.style.left = ``
 };
 
 const resetMario = ()=>{
@@ -33,7 +34,35 @@ const jump = document.addEventListener('keydown',()=>{
     }, 500);
 })
 
-
+const restar = () =>{
+    resetPipe()
+    resetMario()
+    const verificaColisao = setInterval(()=>{
+    
+    
+        const pipePosiiton = pipe.offsetLeft;
+        const marioPosition = (window.getComputedStyle(mario).bottom.replace('px', '')) 
+        const nuvensPosition = nuvens.offsetLeft;
+        
+        if(pipePosiiton <= 120 && pipePosiiton > 0 && marioPosition < 120){
+            pipe.style.animation = 'none'
+            pipe.style.left = `${pipePosiiton}px`
+            mario.style.bottom = `${marioPosition}px`
+            
+            mario.src = './imagens/game-over.png'
+            mario.style.width = '75px'
+            mario.style.marginLeft ='50px'
+            
+            nuvens.style.animationPlayState ='paused'
+            nuvens.style.left= `${nuvensPosition}px`
+            verifica =true
+            
+            
+            div.style.display = 'flex'
+            clearInterval(verificaColisao)
+        }
+    }, 10)
+}
 
 const verificaColisao = setInterval(()=>{
     
@@ -62,8 +91,8 @@ const verificaColisao = setInterval(()=>{
 }, 10)
 
 botao.addEventListener('click', ()=>{
-    resetPipe()
-    resetMario()
+    restar()
+    
     div.style.display = 'none'
     verifica = false    
     
